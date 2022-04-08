@@ -1,0 +1,1 @@
+A text-based checkers game with minimax AI opponent. LASA Spring 2022 Advanced Computer Science project (team 2).
