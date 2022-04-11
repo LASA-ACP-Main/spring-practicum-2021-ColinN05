@@ -2,10 +2,11 @@ Task, Estimated Weight, Date Completed, Sprint, Completer
 Create initial board class, 2, 4/11/2022, 1, Colin
 Create initial pieces and class, 2, B, B, B
 Code tryMove, 3, B, B, B
-Create tryMove capture check, 3, B, B, B
-Create B-tree move structure, 3, B, B, B
-Create B-tree score evaluation, 2, B, B, B
-Create B-tree MiniMax methods, 4, B, B, B
+Create tryMove capture check, 2, B, B, B
+Create tryMove double jump logic, 2, B, B, B
+Create B-tree move structure, 5, B, B, B
+Create B-tree score evaluation, 3, B, B, B
+Create B-tree MiniMax methods, 6, B, B, B
 Create queen special logic & evaluation, 2, B, B, B
 Create move stack class (just store entire board), 2, B, B, B
 Create move stack undo function, 1, B, B, B
