@@ -11,4 +11,4 @@ Create queen special logic & evaluation, 2, B, B, B
 Create move stack class (just store entire board), 2, B, B, B
 Create move stack undo function, 1, B, B, B
 Create opengl render board thing, 3, B, B, B
-Create opengl display stuff, 3, B, B, B
+Create opengl display stuff, 5, B, B, B
