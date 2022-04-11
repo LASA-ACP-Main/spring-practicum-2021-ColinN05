@@ -1,0 +1,11 @@
+Task, Estimated Weight, Completion Date, Assigned User
+Create initial board class, 2, 4/11/2022, Colin
+Create initial pieces and class, 2, B, Colin
+
+Code tryMove, 3, B, William
+Create tryMove capture check, 2, B, William
+Create tryMove double jump logic, 2, B, William
+
+Create B-tree move structure, 5, B, Isaiah & Grant & Colin
+Create B-tree score evaluation, 3, B, Isaiah & Grant & Colin
+Create B-tree MiniMax methods, 6, B, Isaiah & Grant & William & Colin
