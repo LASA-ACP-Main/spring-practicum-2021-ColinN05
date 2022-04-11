@@ -6,6 +6,6 @@ Create tryMove capture check, 3, B, B, B
 Create B-tree move structure, 3, B, B, B
 Create B-tree score evaluation, 2, B, B, B
 Create B-tree MiniMax methods, 4, B, B, B
-Create "queen" special logic & evaluation, 2, B, B, B
+Create queen special logic & evaluation, 2, B, B, B
 Create move stack class (just store entire board), 2, B, B, B
 Create move stack undo function, 1, B, B, B
