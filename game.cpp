@@ -11,7 +11,22 @@ CheckersBoard::CheckersBoard()
           Squares[i][j] = Color::none;
       }
   }
-  //Then make the rows contain their proper starting pieces
+  // put pieces in starting position
+  for (int i = 0; i < 64; i++)
+  {
+    int ypos = (int)floor(i / 8);
+    if (i % 2 == 0 == ypos % 2)
+    {
+      if (ypos < 3)
+      {
+        Squares[i % 8][ypos] = Color::black;
+      }
+      else if (ypos > 4)
+      {
+        Squares[i % 8][ypos] = Color::white;
+      }
+    }
+  }
   
 }
 
@@ -27,7 +42,7 @@ void CheckersBoard::Display()
       {
         case Color::none:
         {
-          board_text += "  ";
+          board_text += "◯  ";
           break;
         }
         case Color::black:
@@ -40,6 +55,7 @@ void CheckersBoard::Display()
           board_text += "⚪ ";
           break;
         }
+      }
     }
     board_text += '\n';
   }
