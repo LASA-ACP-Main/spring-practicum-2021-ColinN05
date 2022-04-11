@@ -1,7 +1,7 @@
 Task, Estimated Weight, Date Completed, Sprint, Completer
-Create initial board class, 2, 4/11/2022, 1, Colin
+Create initial board class, 2, 4/8/2022, 0, Colin
 Create initial pieces on board, 2, B, B, B
-Display board function, 3, B, B, B
+Display board function, 2, 4/11/2022, 1, Colin
 Get player input, 2, B, B, B
 Code tryMove, 3, B, B, B
 Create tryMove capture check, 2, B, B, B
