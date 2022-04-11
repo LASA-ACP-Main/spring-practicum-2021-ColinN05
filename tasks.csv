@@ -1,6 +1,7 @@
 Task, Estimated Weight, Date Completed, Sprint, Completer
 Create initial board class, 2, 4/11/2022, 1, Colin
 Create initial pieces and class, 2, B, B, B
+Get player input, 2, B, B, B
 Code tryMove, 3, B, B, B
 Create tryMove capture check, 2, B, B, B
 Create tryMove double jump logic, 2, B, B, B
