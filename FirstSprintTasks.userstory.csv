@@ -2,6 +2,7 @@ Task, Estimated Weight, Completion Date, Assigned User(s)
 Colin,,,
 Create initial board class, 2, 4/11/2022, Colin
 Create initial pieces and class, 2, B, Colin
+Get player input, 2, B, Colin
 William,,,
 Code tryMove, 3, B, William
 Create tryMove capture check, 2, B, William
