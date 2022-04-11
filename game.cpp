@@ -50,8 +50,13 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1)
 {
     Color colorstart = Squares[x0][y0];
     Color colortry = Squares[x1][y1];
-    if (Squares[x0][y0]){
+    if (colorstart == Color::white){ //Running if white
       
+    } else if (colorstart == Color::black) { //Running if black
+      
+    } else {
+      std::cout<<"Trying to move blank space\n";
+      return false;
     }
     return true; // just return true for now
 }
