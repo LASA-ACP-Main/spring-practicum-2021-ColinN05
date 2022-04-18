@@ -62,28 +62,36 @@ void CheckersBoard::Display()
   std::cout << board_text;
 }
 
-bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1)
+bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
 {
     Color colorstart = Squares[x0][y0];
     Color colortry = Squares[x1][y1];
-    if (colorstart == Color::white){ //Running if white
+    if (colortry != Color::none){
+      std::cout<<"Trying to move to occupied space\n";
+      return false;
+    }
+    if (colorstart == Color::white && moverc == Color::white){ //Running if white
       if (colortry == Color::none && y1 == y0 - 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
         Squares[x0][y0] = Color::none;
         Squares[x1][y1] = Color::white;
         return true;
-      }
-    } else if (colorstart == Color::black) { //Running if black
+        } //else if (){ //capture check
+        
+        //}
+    } else if (colorstart == Color::black && moverc == Color::black) { //Running if black
       if (colortry == Color::none && y1 == y0 + 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
         Squares[x0][y0] = Color::none;
         Squares[x1][y1] = Color::black;
         return true;
-      }
+      } //else if (){ //capture check
+        
+      //}
     } else {
-      std::cout<<"Trying to move blank space\n";
+      std::cout<<"Trying to move blank space or moving wrong team\n";
       return false;
     }
-  std::cout<<"Dude something has gone terribly wrong in TryMove"; 
-  return true; 
+  std::cout<<"Dude something has gone terribly wrong in TryMove OR you're trying to do a very bad move\n"; 
+  return false; 
 }
 
 CheckersGame::CheckersGame()
