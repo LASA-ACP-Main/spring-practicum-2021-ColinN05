@@ -67,14 +67,23 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1)
     Color colorstart = Squares[x0][y0];
     Color colortry = Squares[x1][y1];
     if (colorstart == Color::white){ //Running if white
-      
+      if (colortry == Color::none && y1 == y0 - 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
+        Squares[x0][y0] = Color::none;
+        Squares[x1][y1] = Color::white;
+        return true;
+      }
     } else if (colorstart == Color::black) { //Running if black
-      
+      if (colortry == Color::none && y1 == y0 + 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
+        Squares[x0][y0] = Color::none;
+        Squares[x1][y1] = Color::black;
+        return true;
+      }
     } else {
       std::cout<<"Trying to move blank space\n";
       return false;
     }
-    return true; // just return true for now
+  std::cout<<"Dude something has gone terribly wrong in TryMove"; 
+  return true; 
 }
 
 CheckersGame::CheckersGame()
