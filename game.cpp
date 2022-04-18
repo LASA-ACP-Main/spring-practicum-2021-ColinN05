@@ -92,13 +92,23 @@ CheckersGame::CheckersGame()
 
 void CheckersGame::Play()
 {
-  int winningPlayer = 0;
-  while (winningPlayer == 0)
+  Color winningPlayer = Color::none;
+  while (winningPlayer == Color::none)
   {
     // Get move input from player
-    std::cout << "Move >";
+    std::cout << "Move >\n";
     std::string playerInput;
+    Board.Display();
     std::cin >> playerInput;
-    
+    std::string x0s, y0s, x1s, y1s;
+    int x0, y0, x1, y1;
+    //std::istream inputStream(playerInput);
+    std::stringstream inputStream(playerInput);
+    std::getline(inputStream, x0s, ' ');
+    std::getline(inputStream, y0s, ' ');
+    std::getline(inputStream, x1s, ' ');
+    std::getline(inputStream, y1s, ' ');
+    x0 = stoi(x0s); y0 = stoi(y0s); x1 = stoi(x1s); y1 = stoi(y1s);
+    Board.TryMove(x0, y0, x1, y1);
   }
 }
