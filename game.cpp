@@ -101,22 +101,44 @@ CheckersGame::CheckersGame()
 void CheckersGame::Play()
 {
   Color winningPlayer = Color::none;
+
+  Board.Display();
+  
   while (winningPlayer == Color::none)
-  {
-    // Get move input from player
-    std::cout << "Move >\n";
-    std::string playerInput;
+  { 
+    bool hasMadeValidMove = false;
+    while (!hasMadeValidMove)
+    {
+      // read player input
+      std::cout << "Move >";
+      char playerInput[25];
+      std::cin.get(playerInput, 25);
+      
+      // get coords from input string
+      std::string x0s, y0s, x1s, y1s;
+      int x0, y0, x1, y1;
+      std::stringstream inputStream(playerInput);
+      std::getline(inputStream, x0s, ' ');
+      std::getline(inputStream, y0s, ' ');
+      std::getline(inputStream, x1s, ' ');
+      std::getline(inputStream, y1s, '\0');
+      x0 = stoi(x0s); y0 = stoi(y0s); x1 = stoi(x1s); y1 = stoi(y1s);
+      hasMadeValidMove = Board.TryMove(x0, y0, x1, y1, Color::white); // try move from input
+      if (!hasMadeValidMove) 
+      {
+        std::cout << "Invalid move!\n";
+        std::cin.get(); // press enter to continue
+      }
+    }
+
     Board.Display();
-    std::cin >> playerInput;
-    std::string x0s, y0s, x1s, y1s;
-    int x0, y0, x1, y1;
-    //std::istream inputStream(playerInput);
-    std::stringstream inputStream(playerInput);
-    std::getline(inputStream, x0s, ' ');
-    std::getline(inputStream, y0s, ' ');
-    std::getline(inputStream, x1s, ' ');
-    std::getline(inputStream, y1s, ' ');
-    x0 = stoi(x0s); y0 = stoi(y0s); x1 = stoi(x1s); y1 = stoi(y1s);
-    Board.TryMove(x0, y0, x1, y1);
+
+    std::cout << "\nBot moving  . . .\n";
+    Board.BotMove();
+
+    Board.Display();
+
+    std::cout << "Press enter to continue\n";
+    std::cin.get(); // press enter to continue
   }
 }
