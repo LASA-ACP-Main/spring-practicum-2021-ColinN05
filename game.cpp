@@ -70,24 +70,57 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
       std::cout<<"Trying to move to occupied space\n";
       return false;
     }
-    if (colorstart == Color::white && moverc == Color::white){ //Running if white
-      if (colortry == Color::none && y1 == y0 - 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
+    if (colorstart != moverc) 
+    {
+      std::cout<<"Trying to move wrong team\n";
+      return false;
+    }
+
+    if (colorstart == Color::none){
+        std::cout<<"Trying to move blank space\n";
+        return false;
+    }
+
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    if (abs(dx) != abs(dy))
+    {
+      std::cout << "Not moving along diagonal.\n";
+      return false; 
+    }
+  
+    if (colorstart == Color::white){ //Running if white
+      if (y1 == y0 - 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
         Squares[x0][y0] = Color::none;
         Squares[x1][y1] = Color::white;
         return true;
-        } //else if (){ //capture check
-        
-        //}
-    } else if (colorstart == Color::black && moverc == Color::black) { //Running if black
-      if (colortry == Color::none && y1 == y0 + 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
+        } else if (y1 == y0 - 2 && Squares[x0 + dx/2][y1 + dy/2] == Color::black)// capture check
+      {
+        Squares[x1][y1] = Color::white;
+        Squares[x0][y0] = Color::none;
+        Squares[x0 + dx/2][y0 + dy/2] = Color::none; // capture the piece jumped over
+      }
+    } else if (colorstart == Color::black) { //Running if black
+      if (y1 == y0 + 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
         Squares[x0][y0] = Color::none;
         Squares[x1][y1] = Color::black;
         return true;
-      } //else if (){ //capture check
+      }  else if (y1 == y0 + 2 && Squares[x0 + dx/2][y1 + dy/2] == Color::white)// capture check
+      {
+        Squares[x1][y1] = Color::black;
+        Squares[x0][y0] = Color::none;
+        Squares[x0 + dx/2][y0 + dy/2] = Color::none; // capture the piece jumped over
+      }
         
       //}
     } else {
-      std::cout<<"Trying to move blank space or moving wrong team\n";
+      if (colorstart != moverc && colorstart == Color::none){
+        std::cout<<"Trying to move wrong team\n";
+      } else if (colorstart == Color::none){
+        std::cout<<"Trying to move blank space\n";
+      } else {
+        std::cout<<"what\n";
+      }
       return false;
     }
   std::cout<<"Dude something has gone terribly wrong in TryMove OR you're trying to do a very bad move\n"; 
