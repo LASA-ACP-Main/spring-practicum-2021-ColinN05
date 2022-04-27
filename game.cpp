@@ -1,5 +1,8 @@
 #include "game.h"
 #include <iostream>
+#include <math.h>
+#include <sstream>
+#include "stack.h"
 
 CheckersBoard::CheckersBoard()
 {
@@ -37,22 +40,23 @@ void CheckersBoard::Display()
   {
     for (int i = 0; i < 8; i++)
     {
-      // just print square number for now, might change to special character
+
+      
       switch (Squares[i][j])
       {
         case Color::none:
         {
-          board_text += "◯  ";
+          board_text += "⭕";
           break;
         }
         case Color::black:
         {
-          board_text += "⚫ ";
+          board_text += "⚫";
           break;
         }
         case Color::white:
         {
-          board_text += "⚪ ";
+          board_text += "⚪";
           break;
         }
       }
@@ -129,6 +133,26 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
   return false; 
 }
 
+void CheckersBoard::BotMove()
+{
+  int x0, y0, x1, y1;
+  // find coords for best move
+  // . . .
+
+  bool hasMadeValidMove = false;
+  while (!hasMadeValidMove)
+  {
+    // Generate random TryMove coords
+    int tx0 = rand() % 8;
+    int ty0 = rand() % 8;
+    int tx1 = rand() % 8;
+    int ty1 = rand() % 8;
+    hasMadeValidMove = TryMove(tx0, ty0, tx1, ty1, Color::black);
+  }
+  
+  //TryMove(x0, y0, x1, y1, Color::black);
+}
+
 CheckersGame::CheckersGame()
 {    
 }
@@ -136,12 +160,30 @@ CheckersGame::CheckersGame()
 void CheckersGame::Play()
 {
   Color winningPlayer = Color::none;
-
-  Board.Display();
-  
+  Stack boardstack = Stack();
+  CheckersBoard* currBoard;
   while (winningPlayer == Color::none)
   { 
-    bool hasMadeValidMove = false;
+    Board.Display();
+    
+    PlayerMakeMove(); // this will ask player to make move until they have made valid move
+    currBoard = new CheckersBoard();
+    *currBoard = Board;
+    boardstack.push(currBoard);
+    //Board.Display();
+
+    std::cin.get(); // press enter to continue
+    
+    Board.BotMove();
+    currBoard = new CheckersBoard();
+    *currBoard = Board;
+    boardstack.push(currBoard);
+  }
+}
+
+void CheckersGame::PlayerMakeMove()
+{
+   bool hasMadeValidMove = false;
     while (!hasMadeValidMove)
     {
       // read player input
@@ -166,14 +208,5 @@ void CheckersGame::Play()
       }
     }
 
-    Board.Display();
-
-    std::cout << "\nBot moving  . . .\n";
-    Board.BotMove();
-
-    Board.Display();
-
-    std::cout << "Press enter to continue\n";
-    std::cin.get(); // press enter to continue
-  }
+    //Board.Display();
 }
