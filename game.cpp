@@ -67,17 +67,17 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
     Color colorstart = Squares[x0][y0];
     Color colortry = Squares[x1][y1];
     if (colortry != Color::none){
-      std::cout<<"Trying to move to occupied space\n";
+      //std::cout<<"Trying to move to occupied space\n";
       return false;
     }
     if (colorstart != moverc) 
     {
-      std::cout<<"Trying to move wrong team\n";
+      //std::cout<<"Trying to move wrong team\n";
       return false;
     }
 
     if (colorstart == Color::none){
-        std::cout<<"Trying to move blank space\n";
+        //std::cout<<"Trying to move blank space\n";
         return false;
     }
 
@@ -85,7 +85,7 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
     int dy = y1 - y0;
     if (abs(dx) != abs(dy))
     {
-      std::cout << "Not moving along diagonal.\n";
+      //std::cout << "Not moving along diagonal.\n";
       return false; 
     }
   
@@ -98,18 +98,20 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
       {
         Squares[x1][y1] = Color::white;
         Squares[x0][y0] = Color::none;
-        Squares[x0 + dx/2][y0 + dy/2] = Color::none; // capture the piece jumped over
+        Squares[x0 + dx/2][y0 + dy/2] = Color::none; 
+        return true;// capture the piece jumped over
       }
     } else if (colorstart == Color::black) { //Running if black
       if (y1 == y0 + 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
         Squares[x0][y0] = Color::none;
         Squares[x1][y1] = Color::black;
         return true;
-      }  else if (y1 == y0 + 2 && Squares[x0 + dx/2][y1 + dy/2] == Color::white)// capture check
+      }  else if (y1 == y0 + 2 && Squares[x0 - dx/2][y1 - dy/2] == Color::white)// capture check
       {
         Squares[x1][y1] = Color::black;
         Squares[x0][y0] = Color::none;
         Squares[x0 + dx/2][y0 + dy/2] = Color::none; // capture the piece jumped over
+        return true;
       }
         
       //}
