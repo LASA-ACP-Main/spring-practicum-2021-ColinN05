@@ -1,26 +1,26 @@
-#ifndef _Stack_H_
-#define _Stack_H_
-
+#pragma once
 class Stack
 {
 	struct Node
 	{
-		void* data;
+		class CheckersBoard* data;
 		Node *pNext;
     
 	};
 
-	Node* pTop;
+	
 
 	public:
 		Stack();					// Construct stack
-		void push(void* inData);	// Add element to top of stack
-		void* pop();				// Return element at top of stack and remove from top
-		void* top();				// Return element at top of stack
+    ~Stack();
+		void push(class CheckersBoard* inData);	// Add element to top of stack
+		class CheckersBoard* pop();				// Return element at top of stack and remove from top
+		class CheckersBoard* top();				// Return element at top of stack
 		bool empty();
 		void display();
      int length = 0;
+Node* pTop;
 
 };
 
-#endif 		//_Stack_H_
+
