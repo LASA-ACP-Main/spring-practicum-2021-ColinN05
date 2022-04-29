@@ -1,3 +1,6 @@
+#pragma once
+#include "stack.h"
+
 enum class Color
 {
   none = 0, black = 1, white = 2 // human player is always white
@@ -21,8 +24,11 @@ class CheckersGame
 {
 public:
   CheckersGame();
+  void UndoMove();
   void Play();
   void PlayerMakeMove();
 private:
-  CheckersBoard Board; 
+  CheckersBoard Board;
+
+  Stack boardstack;
 };
