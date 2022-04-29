@@ -155,7 +155,10 @@ void CheckersBoard::BotMove()
 }
 
 CheckersGame::CheckersGame()
-{    
+{
+  CheckersBoard* currBoard = new CheckersBoard();
+  *currBoard = Board;
+  boardstack.push(currBoard);
 }
 
 void CheckersGame::Play()
@@ -165,7 +168,7 @@ void CheckersGame::Play()
   CheckersBoard* currBoard;
   while (winningPlayer == Color::none)
   { 
-    system("clear");
+    //system("clear");
     Board.Display();
     
     PlayerMakeMove(); // this will ask player to make move until they have made valid move
@@ -183,11 +186,11 @@ void CheckersGame::Play()
 
 void CheckersGame::UndoMove(){
   if (boardstack.pTop){
-    //boardstack.pop();
-    //if (boardstack.pTop)
-    //{
+    boardstack.pop();
+    if (boardstack.pTop)
+    {
       Board = *(boardstack.pop());
-    //}
+    }
   }
 }
 
@@ -222,9 +225,11 @@ void CheckersGame::PlayerMakeMove()
         hasMadeValidMove = Board.TryMove(x0, y0, x1, y1, Color::white); // try move from input
         if (hasMadeValidMove)
         {
+          system("clear");
           CheckersBoard* currBoard = new CheckersBoard();
           *currBoard = Board;
           boardstack.push(currBoard);
+          //boardstack.ShowBoards();
         }
         if (!hasMadeValidMove) 
         {
