@@ -2,9 +2,9 @@ Task, Estimated Weight, Date Completed, Sprint, Completer
 Create initial board class, 2, 4/8/2022, 0, Colin
 Create initial pieces on board, 2, 4/11/2022, 1, Colin & William
 Display board function, 2, 4/11/2022, 1, Colin
-Get player input, 2, B, B, B
-Code tryMove, 3, 4/18/2022, 1, William
-Create tryMove capture check, 2, B, B, B
+Get player input, 2, B, B, Colin
+Code tryMove, 4, 4/18/2022, 1, William
+Create tryMove capture check, 2, B, B, William & Colin
 Create tryMove double jump logic, 2, B, B, B
 Create B-tree move structure, 5, B, B, B
 Create B-tree score evaluation, 3, B, B, B
