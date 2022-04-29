@@ -3,6 +3,7 @@
 #include<math.h>
 #include "game.h"
 #include "stack.h"
+#include "game.h"
 using namespace std;
 
 Stack::Stack()
@@ -12,10 +13,10 @@ Stack::Stack()
 
 Stack::~Stack()
 {
-	while (top())
-  {
-    delete pop();
-  }
+	//while (top())
+  //{
+    //delete pop();
+  //y}
 }
 
 
