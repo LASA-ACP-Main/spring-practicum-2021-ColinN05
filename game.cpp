@@ -3,6 +3,7 @@
 #include <math.h>
 #include <sstream>
 #include "stack.h"
+#include <string.h>
 
 CheckersBoard::CheckersBoard()
 {
@@ -160,24 +161,33 @@ CheckersGame::CheckersGame()
 void CheckersGame::Play()
 {
   Color winningPlayer = Color::none;
-  Stack boardstack = Stack();
+  boardstack = Stack();
   CheckersBoard* currBoard;
   while (winningPlayer == Color::none)
   { 
+    system("clear");
     Board.Display();
     
     PlayerMakeMove(); // this will ask player to make move until they have made valid move
-    currBoard = new CheckersBoard();
-    *currBoard = Board;
-    boardstack.push(currBoard);
     //Board.Display();
 
     std::cin.get(); // press enter to continue
     
     Board.BotMove();
-    currBoard = new CheckersBoard();
-    *currBoard = Board;
-    boardstack.push(currBoard);
+    //currBoard = new CheckersBoard();
+    //*currBoard = Board;
+  
+    //boardstack.push(currBoard);
+  }
+}
+
+void CheckersGame::UndoMove(){
+  if (boardstack.pTop){
+    //boardstack.pop();
+    //if (boardstack.pTop)
+    //{
+      Board = *(boardstack.pop());
+    //}
   }
 }
 
@@ -190,21 +200,37 @@ void CheckersGame::PlayerMakeMove()
       std::cout << "Move >";
       char playerInput[25];
       std::cin.get(playerInput, 25);
-      
-      // get coords from input string
-      std::string x0s, y0s, x1s, y1s;
-      int x0, y0, x1, y1;
-      std::stringstream inputStream(playerInput);
-      std::getline(inputStream, x0s, ' ');
-      std::getline(inputStream, y0s, ' ');
-      std::getline(inputStream, x1s, ' ');
-      std::getline(inputStream, y1s, '\0');
-      x0 = stoi(x0s); y0 = stoi(y0s); x1 = stoi(x1s); y1 = stoi(y1s);
-      hasMadeValidMove = Board.TryMove(x0, y0, x1, y1, Color::white); // try move from input
-      if (!hasMadeValidMove) 
+
+      if (strcmp(playerInput, "u") == 0)
       {
-        std::cout << "Invalid move!\n";
-        std::cin.get(); // press enter to continue
+        std::cout << "Undoing last move.\n";
+        UndoMove();
+        Board.Display();
+        std::cin.get();
+      }
+      else
+      {
+        // get coords from input string
+        std::string x0s, y0s, x1s, y1s;
+        int x0, y0, x1, y1;
+        std::stringstream inputStream(playerInput);
+        std::getline(inputStream, x0s, ' ');
+        std::getline(inputStream, y0s, ' ');
+        std::getline(inputStream, x1s, ' ');
+        std::getline(inputStream, y1s, '\0');
+        x0 = stoi(x0s); y0 = stoi(y0s); x1 = stoi(x1s); y1 = stoi(y1s);
+        hasMadeValidMove = Board.TryMove(x0, y0, x1, y1, Color::white); // try move from input
+        if (hasMadeValidMove)
+        {
+          CheckersBoard* currBoard = new CheckersBoard();
+          *currBoard = Board;
+          boardstack.push(currBoard);
+        }
+        if (!hasMadeValidMove) 
+        {
+          std::cout << "Invalid move!\n";
+          std::cin.get(); // press enter to continue
+        }
       }
     }
 
