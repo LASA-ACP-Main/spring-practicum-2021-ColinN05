@@ -39,10 +39,9 @@ void CheckersBoard::Display()
   std::string board_text = "";
   for (int j = 0; j < 8; j++)
   {
+    board_text += std::to_string(j);
     for (int i = 0; i < 8; i++)
     {
-
-      
       switch (Squares[i][j])
       {
         case Color::none:
@@ -60,10 +59,15 @@ void CheckersBoard::Display()
           board_text += "⚪";
           break;
         }
+        case Color::gray:
+        {
+          board_text += "🟠";
+        }
       }
     }
     board_text += '\n';
   }
+  board_text += "  0 1 2 3 4 5 6 7\n";
   std::cout << board_text;
 }
 
@@ -72,17 +76,17 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
     Color colorstart = Squares[x0][y0];
     Color colortry = Squares[x1][y1];
     if (colortry != Color::none){
-      //std::cout<<"Trying to move to occupied space\n";
+      std::cout<<"Trying to move to occupied space\n";
       return false;
     }
     if (colorstart != moverc) 
     {
-      //std::cout<<"Trying to move wrong team\n";
+      std::cout<<"Trying to move wrong team\n";
       return false;
     }
 
     if (colorstart == Color::none){
-        //std::cout<<"Trying to move blank space\n";
+        std::cout<<"Trying to move blank space\n";
         return false;
     }
 
@@ -90,7 +94,7 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
     int dy = y1 - y0;
     if (abs(dx) != abs(dy))
     {
-      //std::cout << "Not moving along diagonal.\n";
+      std::cout << "Not moving along diagonal.\n";
       return false; 
     }
   
@@ -130,7 +134,7 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
       }
       return false;
     }
-  std::cout<<"Dude something has gone terribly wrong in TryMove OR you're trying to do a very bad move\n"; 
+  std::cout << "Reached end of TryMove\n";
   return false; 
 }
 
@@ -150,8 +154,6 @@ void CheckersBoard::BotMove()
     int ty1 = rand() % 8;
     hasMadeValidMove = TryMove(tx0, ty0, tx1, ty1, Color::black);
   }
-  
-  //TryMove(x0, y0, x1, y1, Color::black);
 }
 
 CheckersGame::CheckersGame()
@@ -159,28 +161,28 @@ CheckersGame::CheckersGame()
   CheckersBoard* currBoard = new CheckersBoard();
   *currBoard = Board;
   boardstack.push(currBoard);
+  boardstack.ShowBoards();
 }
 
 void CheckersGame::Play()
 {
   Color winningPlayer = Color::none;
-  boardstack = Stack();
   CheckersBoard* currBoard;
   while (winningPlayer == Color::none)
   { 
-    //system("clear");
+    system("clear");
+    std::cout << "Displaying\n";
     Board.Display();
     
-    PlayerMakeMove(); // this will ask player to make move until they have made valid move
-    //Board.Display();
+    int playerMove = PlayerMakeMove(); // this will ask player to make move until they have made valid move
 
-    std::cin.get(); // press enter to continue
-    
-    Board.BotMove();
-    //currBoard = new CheckersBoard();
-    //*currBoard = Board;
-  
-    //boardstack.push(currBoard);
+    if (playerMove != 1)
+    {
+      Board.BotMove();
+      CheckersBoard* currBoard = new CheckersBoard();
+      *currBoard = Board;
+      boardstack.push(currBoard);
+    }
   }
 }
 
@@ -189,27 +191,26 @@ void CheckersGame::UndoMove(){
     boardstack.pop();
     if (boardstack.pTop)
     {
-      Board = *(boardstack.pop());
+      Board = *(boardstack.pTop->data);
     }
   }
 }
 
-void CheckersGame::PlayerMakeMove()
+int CheckersGame::PlayerMakeMove()
 {
    bool hasMadeValidMove = false;
     while (!hasMadeValidMove)
     {
       // read player input
       std::cout << "Move >";
-      char playerInput[25];
-      std::cin.get(playerInput, 25);
+      std::string playerInput;
+      std::getline(std::cin, playerInput);
 
-      if (strcmp(playerInput, "u") == 0)
+      if (playerInput == "u")
       {
-        std::cout << "Undoing last move.\n";
         UndoMove();
-        Board.Display();
-        std::cin.get();
+        hasMadeValidMove = true;
+        return 1;
       }
       else
       {
@@ -225,19 +226,14 @@ void CheckersGame::PlayerMakeMove()
         hasMadeValidMove = Board.TryMove(x0, y0, x1, y1, Color::white); // try move from input
         if (hasMadeValidMove)
         {
-          system("clear");
-          CheckersBoard* currBoard = new CheckersBoard();
-          *currBoard = Board;
-          boardstack.push(currBoard);
-          //boardstack.ShowBoards();
+          return 0;
         }
-        if (!hasMadeValidMove) 
+        else
         {
           std::cout << "Invalid move!\n";
           std::cin.get(); // press enter to continue
         }
       }
     }
-
-    //Board.Display();
+  return -1;
 }
