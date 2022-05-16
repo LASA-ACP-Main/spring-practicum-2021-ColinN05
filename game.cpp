@@ -137,13 +137,19 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
   std::cout << "Reached end of TryMove\n";
   return false; 
 }
-
 void CheckersBoard::BotMove()
 {
   int x0, y0, x1, y1;
   // find coords for best move
   // . . .
+  GameNode moveTree(this);
+  moveTree.FillTree(this, Color::black);
+  GameNode* bestMove = moveTree.GetBestMove();
+  *this = *(bestMove->Board);
+  moveTree.Free();
 
+/*
+int x0, y0, x1, y1;
   bool hasMadeValidMove = false;
   while (!hasMadeValidMove)
   {
@@ -154,6 +160,7 @@ void CheckersBoard::BotMove()
     int ty1 = rand() % 8;
     hasMadeValidMove = TryMove(tx0, ty0, tx1, ty1, Color::black);
   }
+*/
 }
 
 CheckersGame::CheckersGame()
@@ -161,7 +168,7 @@ CheckersGame::CheckersGame()
   CheckersBoard* currBoard = new CheckersBoard();
   *currBoard = Board;
   boardstack.push(currBoard);
-  boardstack.ShowBoards();
+//boardstack.ShowBoards();
 }
 
 void CheckersGame::Play()
@@ -171,11 +178,12 @@ void CheckersGame::Play()
   while (winningPlayer == Color::none)
   { 
     system("clear");
-    std::cout << "Displaying\n";
+    std::cout << boardstack.length << '\n';
     Board.Display();
+    GameNode n(&Board);
+    std::cout << "Current Score: "<< n.EvaluateScore() << '\n';
     
     int playerMove = PlayerMakeMove(); // this will ask player to make move until they have made valid move
-
     if (playerMove != 1)
     {
       Board.BotMove();
@@ -198,6 +206,7 @@ void CheckersGame::UndoMove(){
 
 int CheckersGame::PlayerMakeMove()
 {
+/*
    bool hasMadeValidMove = false;
     while (!hasMadeValidMove)
     {
@@ -214,6 +223,7 @@ int CheckersGame::PlayerMakeMove()
       }
       else
       {
+      
         // get coords from input string
         std::string x0s, y0s, x1s, y1s;
         int x0, y0, x1, y1;
@@ -231,9 +241,25 @@ int CheckersGame::PlayerMakeMove()
         else
         {
           std::cout << "Invalid move!\n";
-          std::cin.get(); // press enter to continue
+          //std::cin.get(); // press enter to continue
         }
       }
     }
   return -1;
+*/
+
+  
+  // FOR TESTING: Make white player make random moves
+  bool hasMadeValidMove = false;
+  while (!hasMadeValidMove)
+  {
+    // Generate random TryMove coords
+    int tx0 = rand() % 8;
+    int ty0 = rand() % 8;
+    int tx1 = rand() % 8;
+    int ty1 = rand() % 8;
+    hasMadeValidMove = Board.TryMove(tx0, ty0, tx1, ty1, Color::white);
+  }
+  return 0;
+  
 }
