@@ -63,23 +63,24 @@ CheckersBoard::CheckersBoard()
       }
     }
   }
+}
 
 bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
 {
     Color colorstart = Squares[x0][y0];
     Color colortry = Squares[x1][y1];
     if (colortry != Color::none){
-      std::cout<<"Trying to move to occupied space\n";
+      //std::cout<<"Trying to move to occupied space\n";
       return false;
     }
     if (colorstart != moverc) 
     {
-      std::cout<<"Trying to move wrong team\n";
+      //std::cout<<"Trying to move wrong team\n";
       return false;
     }
 
     if (colorstart == Color::none){
-        std::cout<<"Trying to move blank space\n";
+        //std::cout<<"Trying to move blank space\n";
         return false;
     }
 
@@ -87,73 +88,72 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
     int dy = y1 - y0;
     if (abs(dx) != abs(dy))
     {
-      std::cout << "Not moving along diagonal.\n";
+      //std::cout << "Not moving along diagonal.\n";
       return false; 
     }
   
-    if (colorstart == Color::white){ //Running if white
-      if (y1 == y0 - 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
+    if (colorstart == Color::white) //Running if white
+    { 
+      if (dy > 0 && States[x0][y0] != PieceState::king) return false; // if not king and moving down board
+      if (abs(dy) == 1 && abs(dx) == 1)
+      {
+        PieceState saveState = States[x0][y0];
+        States[x0][y0] = PieceState::none;
+        States[x1][y1] = saveState;
         Squares[x0][y0] = Color::none;
         Squares[x1][y1] = Color::white;
+        if (y1 == 0) States[x1][y1] = PieceState::king;
         return true;
-        } else if (y1 == y0 - 2 && Squares[x0 + dx/2][y1 + dy/2] == Color::black)// capture check
+      } 
+      else if (abs(dy) == 2 && Squares[x0 + dx/2][y0 + dy/2] == Color::black)// capture check
       {
+        PieceState saveState = States[x0][y0];
+        States[x0][y0] = PieceState::none;
+        States[x1][y1] = saveState;
         Squares[x1][y1] = Color::white;
         Squares[x0][y0] = Color::none;
         Squares[x0 + dx/2][y0 + dy/2] = Color::none; 
+        if (y1 == 0) States[x1][y1] = PieceState::king;
         return true;// capture the piece jumped over
       }
-    } else if (colorstart == Color::black) { //Running if black
-      if (y1 == y0 + 1 && (x1 == x0 - 1 || x1 == x0 + 1)){
+    } 
+    else if (colorstart == Color::black) 
+    { //Running if black
+      if (dy < 0 && States[x0][y0] != PieceState::king) return false; // if not king and moving up board
+      if (abs(dy) == 1 && abs(dx) == 1)
+      {
+        PieceState saveState = States[x0][y0];
+        States[x0][y0] = PieceState::none;
+        States[x1][y1] = saveState;
         Squares[x0][y0] = Color::none;
         Squares[x1][y1] = Color::black;
+        if (y1 == 7) States[x1][y1] = PieceState::king;
         return true;
-      }  else if (y1 == y0 + 2 && Squares[x0 - dx/2][y1 - dy/2] == Color::white)// capture check
+      }  
+      else if (abs(dy) == 2 && Squares[x0 + dx/2][y1 + dy/2] == Color::white)// capture check
       {
+        PieceState saveState = States[x0][y0];
+        States[x0][y0] = PieceState::none;
+        States[x1][y1] = saveState;
         Squares[x1][y1] = Color::black;
         Squares[x0][y0] = Color::none;
         Squares[x0 + dx/2][y0 + dy/2] = Color::none; // capture the piece jumped over
+        if (y1 == 7) States[x1][y1] = PieceState::king;
         return true;
       }
-        
-      //}
-    } else {
-      if (colorstart != moverc && colorstart == Color::none){
-        std::cout<<"Trying to move wrong team\n";
-      } else if (colorstart == Color::none){
-        std::cout<<"Trying to move blank space\n";
-      } else {
-        std::cout<<"what\n";
+    } 
+    else 
+    {
+      if (colorstart != moverc && colorstart == Color::none)
+      {
+        //std::cout<<"Trying to move wrong team\n";
+      } else if (colorstart == Color::none)
+      {
+        //std::cout<<"Trying to move blank space\n";
       }
       return false;
     }
-  std::cout << "Reached end of TryMove\n";
   return false; 
-}
-void CheckersBoard::BotMove()
-{
-  int x0, y0, x1, y1;
-  // find coords for best move
-  // . . .
-  GameNode moveTree(this);
-  moveTree.FillTree(this, Color::black);
-  GameNode* bestMove = moveTree.GetBestMove();
-  *this = *(bestMove->Board);
-  moveTree.Free();
-
-/*
-int x0, y0, x1, y1;
-  bool hasMadeValidMove = false;
-  while (!hasMadeValidMove)
-  {
-    // Generate random TryMove coords
-    int tx0 = rand() % 8;
-    int ty0 = rand() % 8;
-    int tx1 = rand() % 8;
-    int ty1 = rand() % 8;
-    hasMadeValidMove = TryMove(tx0, ty0, tx1, ty1, Color::black);
-  }
-*/
 }
 
 CheckersGame::CheckersGame()
