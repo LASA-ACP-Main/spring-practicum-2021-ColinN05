@@ -6,6 +6,11 @@ enum class Color
   none = 0, black = 1, white = 2, gray = 3 // human player is always white
 };
 
+enum class PieceState
+{
+  none = 0, def = 1,king = 2
+};
+
 class CheckersBoard
 {
 public:
