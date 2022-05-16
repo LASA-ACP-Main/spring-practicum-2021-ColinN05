@@ -34,42 +34,35 @@ CheckersBoard::CheckersBoard()
   
 }
 
-void CheckersBoard::Display()
+CheckersBoard::CheckersBoard()
 {
-  std::string board_text = "";
-  for (int j = 0; j < 8; j++)
+  // set entire board to be empty
+  for (int i = 0; i < 8; i++)
   {
-    board_text += std::to_string(j);
-    for (int i = 0; i < 8; i++)
-    {
-      switch (Squares[i][j])
+      for (int j = 0; j < 8; j++)
       {
-        case Color::none:
-        {
-          board_text += "⭕";
-          break;
-        }
-        case Color::black:
-        {
-          board_text += "⚫";
-          break;
-        }
-        case Color::white:
-        {
-          board_text += "⚪";
-          break;
-        }
-        case Color::gray:
-        {
-          board_text += "🟠";
-        }
+          Squares[i][j] = Color::none;
+          States[i][j] = PieceState::none;
+      }
+  }
+  // put pieces in starting position
+  for (int i = 0; i < 64; i++)
+  {
+    int ypos = (int)floor(i / 8);
+    if (i % 2 == 0 == ypos % 2)
+    {
+      if (ypos < 3)
+      {
+        Squares[i % 8][ypos] = Color::black;
+        States[i % 8][ypos] = PieceState::def;
+      }
+      else if (ypos > 4)
+      {
+        Squares[i % 8][ypos] = Color::white;
+        States[i % 8][ypos] = PieceState::def;
       }
     }
-    board_text += '\n';
   }
-  board_text += "  0 1 2 3 4 5 6 7\n";
-  std::cout << board_text;
-}
 
 bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
 {
