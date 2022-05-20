@@ -22,6 +22,7 @@ public:
   bool TryMove(int x0, int y0, int x1, int y1, Color moverc);
   void BotMove();
 	Color Squares[8][8]; // 0 = empty square, 1 = black square, 2 = white square
+  PieceState States[8][8];
 };
 
 class CheckersGame
