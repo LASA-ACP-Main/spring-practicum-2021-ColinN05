@@ -4,35 +4,7 @@
 #include <sstream>
 #include "stack.h"
 #include <string.h>
-
-CheckersBoard::CheckersBoard()
-{
-  // set entire board to be empty
-  for (int i = 0; i < 8; i++)
-  {
-      for (int j = 0; j < 8; j++)
-      {
-          Squares[i][j] = Color::none;
-      }
-  }
-  // put pieces in starting position
-  for (int i = 0; i < 64; i++)
-  {
-    int ypos = (int)floor(i / 8);
-    if (i % 2 == 0 == ypos % 2)
-    {
-      if (ypos < 3)
-      {
-        Squares[i % 8][ypos] = Color::black;
-      }
-      else if (ypos > 4)
-      {
-        Squares[i % 8][ypos] = Color::white;
-      }
-    }
-  }
-  
-}
+#include "GameTree.h"
 
 CheckersBoard::CheckersBoard()
 {
@@ -63,9 +35,10 @@ CheckersBoard::CheckersBoard()
       }
     }
   }
+  
 }
 
-	void CheckersBoard::Display()
+void CheckersBoard::Display()
 {
   std::string board_text = "";
   for (int j = 0; j < 8; j++)
@@ -191,6 +164,32 @@ bool CheckersBoard::TryMove(int x0, int y0, int x1, int y1, Color moverc)
       return false;
     }
   return false; 
+}
+
+void CheckersBoard::BotMove()
+{
+  int x0, y0, x1, y1;
+  // find coords for best move
+  // . . .
+  GameNode moveTree(this);
+  moveTree.FillTree(this, Color::black);
+  GameNode* bestMove = moveTree.GetBestMove();
+  *this = *(bestMove->Board);
+  moveTree.Free();
+
+/*
+int x0, y0, x1, y1;
+  bool hasMadeValidMove = false;
+  while (!hasMadeValidMove)
+  {
+    // Generate random TryMove coords
+    int tx0 = rand() % 8;
+    int ty0 = rand() % 8;
+    int tx1 = rand() % 8;
+    int ty1 = rand() % 8;
+    hasMadeValidMove = TryMove(tx0, ty0, tx1, ty1, Color::black);
+  }
+*/
 }
 
 CheckersGame::CheckersGame()
